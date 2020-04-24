@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { useHistory } from "react-router-dom";
 
 //Props passed in--> 
 //colors = colorList 
@@ -14,6 +15,7 @@ const ColorList = ({ colors, updateColors }) => {
   console.log({colors});
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const {go} = useHistory()
 
 
   const editColor = color => {
@@ -27,15 +29,15 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
-    // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is id saved right now?
+    // Make a put request to save your updated color✅
+    // think about where will you get the id from...where is id saved right now?
     axiosWithAuth()
       .put(`/api/colors/${colorToEdit.id}`, colorToEdit)
       .then(res => {
-        console.log("Res with PUT", res)
+        console.log("Res with PUT", res.data)
         //res.data
-        updateColors(res.data)
+        // updateColors(res.data)
+        // go(0)
       })
       .catch(err => {
         console.log({err})
@@ -43,15 +45,16 @@ const ColorList = ({ colors, updateColors }) => {
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    // make a delete request to delete this color✅
     console.log("DELETE COLOR", color)
     axiosWithAuth()
-      .delete(`/api/colors/${colorToEdit.id}`)
+      .delete(`/api/colors/${color.id}`)
       .then(res => {
-        console.log("DELETE RES", res)
+        console.log("DELETE RES.data", res.data)
         //res.data
         const newList = colors.filter(item => `${item.id}` !== res.data)
         updateColors(newList)
+        go(0)
       })
       .catch(err => {
         console.log("DELETE ERROR", err)
