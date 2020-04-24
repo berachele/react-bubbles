@@ -25,7 +25,7 @@ class Login extends React.Component{
     axiosWithAuth()
       .post("/api/login", this.state.logInfo)
       .then(res => {
-        console.log({res})
+        // console.log({res})
         //res/data/payload
         localStorage.setItem('token', JSON.stringify(res.data.payload))
         this.props.history.push("/bubbles")
