@@ -22,14 +22,6 @@ const ColorList = ({ colors, updateColors }) => {
     setColorToEdit(color);
   };
 
-
-  // const getID = colors.map(item=> {
-  //   console.log("MAP FUNCITON", item); 
-  //   if(editColor === item) {
-  //     return item
-  //   }
-  // })
-  // const color = getID
   console.log("COLOR TO EDIT", colorToEdit)
 
 
@@ -39,9 +31,11 @@ const ColorList = ({ colors, updateColors }) => {
     // think about where will you get the id from...
     // where is id saved right now?
     axiosWithAuth()
-      .put(`/api/colors/`, colors)
+      .put(`/api/colors/${colorToEdit.id}`, colorToEdit)
       .then(res => {
         console.log("Res with PUT", res)
+        //res.data
+        updateColors(res.data)
       })
       .catch(err => {
         console.log({err})
@@ -52,9 +46,16 @@ const ColorList = ({ colors, updateColors }) => {
     // make a delete request to delete this color
     console.log("DELETE COLOR", color)
     axiosWithAuth()
-      .delete()
-      .then()
-      .catch()
+      .delete(`/api/colors/${colorToEdit.id}`)
+      .then(res => {
+        console.log("DELETE RES", res)
+        //res.data
+        const newList = colors.filter(item => `${item.id}` !== res.data)
+        updateColors(newList)
+      })
+      .catch(err => {
+        console.log("DELETE ERROR", err)
+      })
   };
 
   return (
