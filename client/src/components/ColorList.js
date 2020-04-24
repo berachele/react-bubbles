@@ -16,6 +16,7 @@ const ColorList = ({ colors, updateColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
   const {go} = useHistory()
+  const [addColor, setAddColor] = useState(initialColor)
 
 
   const editColor = color => {
@@ -56,6 +57,19 @@ const ColorList = ({ colors, updateColors }) => {
       })
   };
 
+  const addNew = e=> {
+    e.preventDefault()
+    axiosWithAuth()
+      .post("/api/colors", body)
+      .then(res => {
+        setEditing(res.data)
+        go(0)
+      })
+      .catch(err => {
+        console.log("ADD ERR", err)
+      })
+  }
+
   return (
     <div className="colors-wrap">
       <p>colors</p>
@@ -80,6 +94,7 @@ const ColorList = ({ colors, updateColors }) => {
         ))}
       </ul>
       {editing && (
+        <div>
         <form onSubmit={saveEdit}>
           <legend>edit color</legend>
           <label>
@@ -108,6 +123,35 @@ const ColorList = ({ colors, updateColors }) => {
             <button onClick={() => setEditing(false)}>cancel</button>
           </div>
         </form>
+        <form onSubmit={addNew}>
+          <legend>add color</legend>
+          <label>
+            color name:
+            <input
+              onChange={e =>
+                setColorToEdit({ ...colorToEdit, color: e.target.value })
+              }
+              value={colorToEdit.color}
+            />
+          </label>
+          <label>
+            hex code:
+            <input
+              onChange={e =>
+                setColorToEdit({
+                  ...colorToEdit,
+                  code: { hex: e.target.value }
+                })
+              }
+              value={colorToEdit.code.hex}
+            />
+          </label>
+          <div className="button-row">
+            <button type="submit">save</button>
+            <button onClick={() => setAddColor(false)}>cancel</button>
+          </div>
+        </form>
+        </div>
       )}
       <div className="spacer" />
       {/* stretch - build another form here to add a color */}
