@@ -19,7 +19,6 @@ const ColorList = ({ colors, updateColors }) => {
 
 
   const editColor = color => {
-    console.log("EDITCOLR", color)
     setEditing(true);
     setColorToEdit(color);
   };
@@ -35,8 +34,6 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
       .put(`/api/colors/${id}`, body)
       .then(res => {
-        console.log("Res with PUT", res.data)
-        //res.data
         setEditing(res.data)
         go(0)
       })
@@ -47,12 +44,9 @@ const ColorList = ({ colors, updateColors }) => {
 
   const deleteColor = color => {
     // make a delete request to delete this color✅
-    console.log("DELETE COLOR", color)
     axiosWithAuth()
       .delete(`/api/colors/${color.id}`)
       .then(res => {
-        console.log("DELETE RES.data", res.data)
-        //res.data
         const newList = colors.filter(item => `${item.id}` !== res.data)
         updateColors(newList)
         go(0)
