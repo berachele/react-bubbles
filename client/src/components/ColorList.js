@@ -16,7 +16,7 @@ const ColorList = ({ colors, updateColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
   const {go} = useHistory()
-  const [addColor, setAddColor] = useState(initialColor)
+  const [colorToAdd, setColorToAdd] = useState(initialColor)
 
 
   const editColor = color => {
@@ -123,6 +123,9 @@ const ColorList = ({ colors, updateColors }) => {
             <button onClick={() => setEditing(false)}>cancel</button>
           </div>
         </form>
+        {/* //WHERE ADDING STARTS */}
+        {/* //WHERE ADDING STARTS */}
+        {/* //WHERE ADDING STARTS */}
         <form onSubmit={addNew}>
           <legend>add color</legend>
           <label>
@@ -147,8 +150,8 @@ const ColorList = ({ colors, updateColors }) => {
             />
           </label>
           <div className="button-row">
-            <button type="submit">save</button>
-            <button onClick={() => setAddColor(false)}>cancel</button>
+            <button type="submit">add</button>
+            <button onClick={() => setEditing(false)}>cancel</button>
           </div>
         </form>
         </div>
